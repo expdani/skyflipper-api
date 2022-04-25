@@ -4,6 +4,7 @@ import {
   GraphQLNonNull,
   GraphQLString,
 } from "graphql";
+import isAuthorized, { ROLES } from "../../Authentication";
 import { KarmaTotal } from "../../Entities/KarmaTotal";
 import { KarmaTotalType } from "../../TypeDefs/KarmaTotal";
 import { addKarmaToTotal, getUserKarma } from "../KarmaTotal/functions";
@@ -15,8 +16,10 @@ export const ADD_KARMA = {
     server_id: { type: GraphQLNonNull(GraphQLString) },
     amount: { type: GraphQLNonNull(GraphQLInt) },
   },
-  async resolve(parent: any, args: any) {
+  async resolve(parent: any, args: any, context: any) {
     const { user_id, server_id, amount } = args;
+    if (!(await isAuthorized(ROLES.ADMIN, context.authorization, {})))
+      return new Error("unauthorized");
 
     return addKarmaToTotal(user_id, server_id, amount);
   },

@@ -1,8 +1,13 @@
-import { GraphQLObjectType, GraphQLNonNull, GraphQLString } from "graphql";
+import { GraphQLObjectType, GraphQLString, GraphQLBoolean } from "graphql";
 
-export const DiscordType = new GraphQLObjectType({
-  name: "Discord",
+export const DiscordServer = new GraphQLObjectType({
+  name: "DiscordServer",
   fields: () => ({
-    code: { type: new GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+    icon: { type: GraphQLString },
+    owner: { type: GraphQLBoolean },
+    permissions: { type: GraphQLString },
+    features: { type: GraphQLString },
   }),
 });

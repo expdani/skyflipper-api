@@ -7,17 +7,16 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-type inventoryType = {
-  items?: [{ id?: string; amount?: number }];
-};
-
 @Entity()
-export class Inventory extends BaseEntity {
-  @PrimaryColumn()
-  user_id!: string;
+export class Settings extends BaseEntity {
+  @PrimaryColumn({ name: "server_id" })
+  server_id!: string;
 
-  @Column("simple-json")
-  inventory: inventoryType | undefined;
+  @Column("boolean", { default: true })
+  karma: boolean = true;
+
+  @Column("boolean", { default: true })
+  karma_reactions: boolean = true;
 
   @CreateDateColumn({
     type: "timestamp",

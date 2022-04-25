@@ -23,7 +23,7 @@ export async function getUserKarma(user_id: string, server_id: string) {
   });
 
   if (total) return total;
-  else return initiateKarmaTotal(user_id, server_id);
+  else return await initiateKarmaTotal(user_id, server_id);
 }
 
 export async function addKarmaToTotal(
@@ -45,5 +45,5 @@ export async function addKarmaToTotal(
       user_id,
       server_id,
     });
-  } else return initiateKarmaTotal(user_id, server_id, karma);
+  } else return await initiateKarmaTotal(user_id, server_id, karma);
 }

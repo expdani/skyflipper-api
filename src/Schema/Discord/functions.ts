@@ -4,6 +4,8 @@ import * as config from "../../../config.json";
 import uuid from "node-uuid";
 import { env } from "../../../environment";
 import fetch from "cross-fetch";
+import { DISCORD_ERROR } from ".";
+import delay from "../../Utils/delay";
 
 export async function initiateSession(
   user_id: string,
@@ -22,12 +24,6 @@ export async function initiateSession(
     discord_token,
     discord_type,
   });
-
-  console.log(
-    Sessions.findOne({
-      access_token,
-    })
-  );
 
   return await Sessions.findOne({
     access_token,
@@ -53,4 +49,24 @@ export async function fetchToken(code: string) {
   });
 
   return oauth;
+}
+
+export async function getUserDiscordServers(
+  session: any,
+  retry?: number
+): Promise<any> {
+  if (retry) await delay(retry ? retry : 1000);
+  const response = await fetch("https://discord.com/api/users/@me/guilds", {
+    headers: {
+      authorization: `${session.discord_type} ${session.discord_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (data.message === DISCORD_ERROR.RATE_LIMIT) {
+    return await getUserDiscordServers(session, data.retry_after);
+  } else {
+    return data;
+  }
 }

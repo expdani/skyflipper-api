@@ -1,11 +1,23 @@
-import { GraphQLNonNull, GraphQLString } from "graphql";
+import {
+  GraphQLError,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLString,
+} from "graphql";
 import { SessionType } from "../../TypeDefs/Session";
 import fetch from "cross-fetch";
-import { fetchToken, initiateSession } from "./functions";
+import {
+  fetchToken,
+  getUserDiscordServers,
+  initiateSession,
+} from "./functions";
 import { MessageType } from "../../TypeDefs/Messages";
+import isAuthorized, { getSession, ROLES } from "../../Authentication";
+import { DiscordServer } from "../../TypeDefs/Discord";
 
-enum DISCORD_ERROR {
+export enum DISCORD_ERROR {
   INVALID_REQUEST = "invalid_request",
+  RATE_LIMIT = "You are being rate limited.",
 }
 
 export const DISCORD_API_LOGIN = {
@@ -13,7 +25,7 @@ export const DISCORD_API_LOGIN = {
   args: {
     code: { type: GraphQLNonNull(GraphQLString) },
   },
-  async resolve(parent: any, args: any) {
+  async resolve(post: any, args: any, context: any) {
     const { code } = args;
 
     try {
@@ -21,7 +33,7 @@ export const DISCORD_API_LOGIN = {
 
       const oauthData = await oauth.json();
 
-      if (oauthData.error) return [{ error: "true", message: oauthData.error }];
+      if (oauthData.error) return new GraphQLError(oauthData.error);
       else {
         const result = await fetch("https://discord.com/api/users/@me", {
           headers: {
@@ -31,16 +43,33 @@ export const DISCORD_API_LOGIN = {
 
         const data = await result.json();
 
-        if (data)
+        if (data) {
           return initiateSession(
             data.id,
             oauthData.access_token,
             oauthData.token_type
           );
-        else return { error: "true", message: "Unknown error." };
+        } else
+          throw new GraphQLError("An unknown error occured, please try again.");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      throw new GraphQLError("An unknown error occured, please try again.");
     }
+  },
+};
+
+export const GET_USER_OWNER_SERVERS = {
+  type: new GraphQLList(DiscordServer),
+  args: {},
+  async resolve(parent: any, args: any, context: any) {
+    const session = await getSession(context.authorization);
+    if (!session) return new Error("invalid_session");
+
+    const data = await getUserDiscordServers(session);
+
+    return data.filter((server: any) => {
+      if (server.owner) return server;
+    });
   },
 };

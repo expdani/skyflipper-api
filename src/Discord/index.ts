@@ -1,9 +1,5 @@
 import express from "express";
-import fetch from "cross-fetch";
 import * as config from "../../config.json";
-// import crypto from "crypto";
-// import uuid from "node-uuid";
-import { env } from "../../environment";
 
 /**
  * @type a session.
@@ -32,7 +28,6 @@ router.get("/login", async (_req: express.Request, res: express.Response) => {
 router.get("/callback", async (req: express.Request, res: express.Response) => {
   const code = await req.query.code;
   res.send(code);
-  console.log(code);
 });
 
 export default router;
