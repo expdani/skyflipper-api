@@ -26,17 +26,14 @@ export async function buyItem(user_id: string, item: string, amount?: number) {
     if (!shopItem) return new Error(ErrorKeys.ITEM_NOT_FOUND);
     if (!balance) return new Error(ErrorKeys.NOT_ENOUGH_MONEY);
     if (!amount) amount = 1;
-
     if (shopItem.shop) {
       const newBalance = balance.wallet - shopItem.price * amount;
       if (newBalance >= 0) {
         await addToWallet(user_id, -(shopItem.price * amount));
         await addItemToInventory(user_id, shopItem.id, amount);
         return shopItem;
-      }
-    } else {
-      return new Error(ErrorKeys.NOT_FOR_SALE);
-    }
+      } else return new Error(ErrorKeys.NOT_ENOUGH_MONEY);
+    } else return new Error(ErrorKeys.NOT_FOR_SALE);
   } catch (err) {
     return new Error(ErrorKeys.UNKNOWN_ERROR);
   }
@@ -49,7 +46,6 @@ export async function sellItem(user_id: string, item: string, amount?: number) {
 
     const sellItem = await getUserItem(user_id, shopItem.id);
     if (!sellItem) return new Error(ErrorKeys.NOT_ENOUGH_ITEMS);
-
     if (!amount) amount = 1;
 
     if (shopItem && shopItem.price) {
@@ -57,10 +53,8 @@ export async function sellItem(user_id: string, item: string, amount?: number) {
         await addItemToInventory(user_id, shopItem.id, -amount);
         await addToWallet(user_id, (shopItem.price * amount) / 2);
         return shopItem;
-      }
-    } else {
-      return new Error(ErrorKeys.CANT_SELL);
-    }
+      } else return new Error(ErrorKeys.NOT_ENOUGH_ITEMS);
+    } else return new Error(ErrorKeys.CANT_SELL);
   } catch (err) {
     return new Error(ErrorKeys.UNKNOWN_ERROR);
   }
