@@ -1,7 +1,13 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLString } from "graphql";
 import isAuthorized, { ROLES } from "../../Authentication";
 import { CurrencyEnumType, CurrencyType } from "../../TypeDefs/Currency";
-import { addToBank, addToWallet, getUserCurrency } from "./functions";
+import {
+  addToBank,
+  addToWallet,
+  deposit,
+  getUserCurrency,
+  withdraw,
+} from "./functions";
 
 export enum CURRENCY_TYPE {
   WALLET = "wallet",
@@ -35,6 +41,39 @@ export const GET_CURRENCY = {
 
     if (!(await isAuthorized(ROLES.USER, context.authorization, { user_id })))
       return new Error("unauthorized");
+
+    console.log("test");
+
     return await getUserCurrency(user_id);
+  },
+};
+
+export const DEPOSIT = {
+  type: CurrencyType,
+  args: {
+    user_id: { type: GraphQLNonNull(GraphQLString) },
+    amount: { type: GraphQLInt },
+  },
+  async resolve(parent: any, args: any, context: any) {
+    const { user_id, amount } = args;
+    if (!(await isAuthorized(ROLES.USER, context.authorization, { user_id })))
+      return new Error("unauthorized");
+
+    return deposit(user_id, amount);
+  },
+};
+
+export const WITHDRAW = {
+  type: CurrencyType,
+  args: {
+    user_id: { type: GraphQLNonNull(GraphQLString) },
+    amount: { type: GraphQLInt },
+  },
+  async resolve(parent: any, args: any, context: any) {
+    const { user_id, amount } = args;
+    if (!(await isAuthorized(ROLES.USER, context.authorization, { user_id })))
+      return new Error("unauthorized");
+
+    return withdraw(user_id, amount);
   },
 };

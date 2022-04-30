@@ -13,6 +13,7 @@ import * as discord from "./Discord";
 import { Sessions } from "./Entities/Sessions";
 import { env } from "../environment";
 import { Settings } from "./Entities/Settings";
+import { Items } from "./Entities/Items";
 
 const main = async () => {
   await createConnection({
@@ -32,6 +33,7 @@ const main = async () => {
       KarmaPosts,
       Sessions,
       Settings,
+      Items,
     ],
   });
 

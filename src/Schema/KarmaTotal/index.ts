@@ -30,10 +30,9 @@ export const GET_USER_KARMA = {
   args: {
     user_id: { type: GraphQLNonNull(GraphQLString) },
     server_id: { type: GraphQLNonNull(GraphQLString) },
-    amount: { type: GraphQLNonNull(GraphQLInt) },
   },
   async resolve(parent: any, args: any) {
-    const { user_id, server_id, amount } = args;
+    const { user_id, server_id } = args;
 
     return getUserKarma(user_id, server_id);
   },
