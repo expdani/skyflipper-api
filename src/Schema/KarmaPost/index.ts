@@ -25,12 +25,19 @@ export const CREATE_KARMA_POST = {
       author_id,
     });
 
-    if (post)
+    if (post) {
       await KarmaPosts.update(
         { user_id, server_id, message_id, author_id },
         { vote }
       );
-    else
+
+      return await await KarmaPosts.findOne({
+        user_id,
+        server_id,
+        message_id,
+        author_id,
+      });
+    } else {
       await KarmaPosts.insert({
         user_id,
         server_id,
@@ -39,7 +46,13 @@ export const CREATE_KARMA_POST = {
         vote,
       });
 
-    return args;
+      return await KarmaPosts.findOne({
+        user_id,
+        server_id,
+        message_id,
+        author_id,
+      });
+    }
   },
 };
 
@@ -56,12 +69,19 @@ export const DELETE_KARMA_POST = {
     if (!(await isAuthorized(ROLES.ADMIN, context.authorization, {})))
       return new Error("unauthorized");
 
-    await KarmaPosts.delete({
+    const post = await KarmaPosts.findOne({
       user_id,
       server_id,
       message_id,
       author_id,
     });
-    return args;
+
+    if (post)
+      return await KarmaPosts.delete({
+        user_id,
+        server_id,
+        message_id,
+        author_id,
+      });
   },
 };

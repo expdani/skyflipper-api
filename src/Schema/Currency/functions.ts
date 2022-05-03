@@ -1,5 +1,6 @@
 import { CURRENCY_TYPE } from ".";
 import { Currency } from "../../Entities/Currency";
+import { ErrorKeys } from "../../Utils/errors";
 
 export async function initiateCurrency(
   user_id: string,
@@ -55,8 +56,71 @@ export async function getUserCurrency(user_id: string) {
   });
 
   if (currency) {
-    return await Currency.findOne({
-      user_id,
-    });
+    return currency;
   } else return initiateCurrency(user_id);
+}
+
+export async function deposit(user_id: string, amount?: number) {
+  const currency = await Currency.findOne({
+    user_id,
+  });
+
+  if (currency) {
+    if (amount) {
+      if (currency.wallet < amount)
+        return new Error(ErrorKeys.NOT_ENOUGH_MONEY);
+      await Currency.update(
+        { user_id },
+        { bank: currency.bank + amount, wallet: currency.wallet - amount }
+      );
+
+      return await Currency.findOne({
+        user_id,
+      });
+    } else if (!amount) {
+      await Currency.update(
+        { user_id },
+        { bank: currency.bank + currency.wallet, wallet: 0 }
+      );
+
+      return await Currency.findOne({
+        user_id,
+      });
+    }
+  } else {
+    await initiateCurrency(user_id);
+    return new Error(ErrorKeys.NOT_ENOUGH_MONEY);
+  }
+}
+
+export async function withdraw(user_id: string, amount?: number) {
+  const currency = await Currency.findOne({
+    user_id,
+  });
+
+  if (currency) {
+    if (amount) {
+      if (currency.bank < amount) return new Error(ErrorKeys.NOT_ENOUGH_MONEY);
+      await Currency.update(
+        { user_id },
+        { bank: currency.bank - amount, wallet: currency.wallet + amount }
+      );
+
+      return await Currency.findOne({
+        user_id,
+      });
+    } else if (!amount) {
+      await Currency.update(
+        { user_id },
+        { wallet: currency.bank + currency.wallet, bank: 0 }
+      );
+
+      return await Currency.findOne({
+        user_id,
+      });
+    }
+  } else {
+    await initiateCurrency(user_id);
+    return new Error(ErrorKeys.NOT_ENOUGH_MONEY);
+  }
 }

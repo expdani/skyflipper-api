@@ -17,7 +17,7 @@ export class Inventory extends BaseEntity {
   user_id!: string;
 
   @Column("simple-json")
-  inventory: inventoryType | undefined;
+  inventory!: inventoryType;
 
   @CreateDateColumn({
     type: "timestamp",

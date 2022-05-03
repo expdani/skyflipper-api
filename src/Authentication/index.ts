@@ -18,7 +18,7 @@ export default async function isAuthorized(
   { user_id, server_id }: AuthorizationData
 ) {
   if (!token) return false;
-  if (token === env.CLIENT_SECRET) return true;
+  if (token === env.API_SECRET) return true;
 
   const session = await Sessions.findOne({
     access_token: token,
