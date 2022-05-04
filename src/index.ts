@@ -14,6 +14,7 @@ import { Sessions } from "./Entities/Sessions";
 import { env } from "../environment";
 import { Settings } from "./Entities/Settings";
 import { Items } from "./Entities/Items";
+import { RandomEvents } from "./Entities/RandomEvents";
 
 const main = async () => {
   await createConnection({
@@ -26,13 +27,13 @@ const main = async () => {
     logging: false,
     synchronize: true,
     entities: [
-      Users,
       Currency,
       Inventory,
       KarmaTotal,
       KarmaPosts,
       Sessions,
       Settings,
+      RandomEvents,
       Items,
     ],
   });
