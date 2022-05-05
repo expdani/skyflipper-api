@@ -12,6 +12,24 @@ export async function getItemShop() {
   });
 }
 
+export async function getItemsList(items: [string]) {
+  try {
+    const filter: any = [];
+
+    items.forEach(async (item) => {
+      filter.push({ id: item });
+    });
+
+    const list = await Items.find({
+      where: filter,
+    });
+
+    return list;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getItem(item: string) {
   return await Items.findOne({
     where: [{ id: item }, { name: item }],

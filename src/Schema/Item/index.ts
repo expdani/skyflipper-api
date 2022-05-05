@@ -6,12 +6,23 @@ import {
 } from "graphql";
 import isAuthorized, { ROLES } from "../../Authentication";
 import { Item } from "../../TypeDefs/Item";
-import { buyItem, getItemShop, sellItem } from "./functions";
+import { buyItem, getItemShop, getItemsList, sellItem } from "./functions";
 
 export const GET_ITEM_SHOP = {
   type: new GraphQLList(Item),
   async resolve() {
     return getItemShop();
+  },
+};
+
+export const GET_ITEMS = {
+  type: new GraphQLList(Item),
+  args: {
+    items: { type: GraphQLNonNull(new GraphQLList(GraphQLString)) },
+  },
+  async resolve(post: any, args: any, context: any) {
+    const { items } = args;
+    return await getItemsList(JSON.parse(items));
   },
 };
 
