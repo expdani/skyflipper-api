@@ -42,8 +42,6 @@ export const GET_CURRENCY = {
     if (!(await isAuthorized(ROLES.USER, context.authorization, { user_id })))
       return new Error("unauthorized");
 
-    console.log("test");
-
     return await getUserCurrency(user_id);
   },
 };

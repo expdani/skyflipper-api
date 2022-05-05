@@ -30,6 +30,9 @@ export class RandomEvents extends BaseEntity {
   text!: string;
 
   @Column("text")
+  answer!: string;
+
+  @Column("text")
   successText!: string;
 
   @Column("text")

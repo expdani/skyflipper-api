@@ -22,6 +22,7 @@ export const RandomEventType = new GraphQLObjectType({
     type: { type: GraphQLString },
     name: { type: GraphQLString },
     text: { type: GraphQLString },
+    answer: { type: GraphQLString },
     successText: { type: GraphQLString },
     failText: { type: GraphQLString },
     rewards: { type: GraphQLJSON },
