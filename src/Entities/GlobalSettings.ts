@@ -8,11 +8,9 @@ import {
 } from "typeorm";
 
 type botSettings = {
-  settings?: {
-    random_event?: {
-      enabled?: boolean;
-      percent_change_per_message?: number;
-    };
+  random_event?: {
+    enabled?: boolean;
+    percent_change_per_message?: number;
   };
 };
 
