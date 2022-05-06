@@ -15,6 +15,7 @@ export async function getItemShop() {
 export async function getItemsList(items: [string]) {
   try {
     const filter: any = [];
+    console.log(items);
 
     items.forEach(async (item) => {
       filter.push({ id: item });

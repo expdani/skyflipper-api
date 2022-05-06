@@ -21,8 +21,12 @@ export const GET_ITEMS = {
     items: { type: GraphQLNonNull(new GraphQLList(GraphQLString)) },
   },
   async resolve(post: any, args: any, context: any) {
-    const { items } = args;
-    return await getItemsList(JSON.parse(items));
+    let { items } = args;
+    try {
+      return await getItemsList(JSON.parse(items));
+    } catch (err) {
+      return await getItemsList(JSON.parse(JSON.stringify(items)));
+    }
   },
 };
 

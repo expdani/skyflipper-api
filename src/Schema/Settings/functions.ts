@@ -1,5 +1,5 @@
+import { GlobalSettings } from "../../Entities/GlobalSettings";
 import { Settings } from "../../Entities/Settings";
-import { SettingsType } from "../../TypeDefs/Settings";
 
 export async function initiateServerSettings(server_id: string) {
   await Settings.insert({
@@ -31,4 +31,12 @@ export async function updateServerSettings(server_id: string) {
       server_id,
     });
   } else return initiateServerSettings(server_id);
+}
+
+export async function getBotSettings() {
+  const settings = await GlobalSettings.findOne({
+    name: "bot",
+  });
+
+  return settings;
 }

@@ -7,19 +7,22 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+type botSettings = {
+  settings?: {
+    random_event?: {
+      enabled?: boolean;
+      percent_change_per_message?: number;
+    };
+  };
+};
+
 @Entity()
-export class Settings extends BaseEntity {
-  @PrimaryColumn({ name: "server_id" })
-  server_id!: string;
+export class GlobalSettings extends BaseEntity {
+  @PrimaryColumn({ name: "name" })
+  name!: string;
 
-  @Column("boolean", { default: true })
-  karma_enabled: boolean = true;
-
-  @Column("boolean", { default: true })
-  karma_reactions: boolean = true;
-
-  @Column("boolean", { default: false })
-  random_message_events_enabled: boolean = false;
+  @Column("simple-json")
+  settings!: botSettings;
 
   @CreateDateColumn({
     type: "timestamp",
