@@ -70,3 +70,24 @@ export async function getUserDiscordServers(
     return data;
   }
 }
+
+export async function getUserDiscordData(
+  session: any,
+  retry?: number
+): Promise<any> {
+  if (retry) await delay(retry ? retry : 1000);
+  const response = await fetch("https://discord.com/api/users/@me", {
+    headers: {
+      authorization: `${session.discord_type} ${session.discord_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (data.message === DISCORD_ERROR.RATE_LIMIT) {
+    return await getUserDiscordData(session, data.retry_after);
+  } else {
+    console.log(data);
+    return data;
+  }
+}

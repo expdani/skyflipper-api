@@ -8,12 +8,13 @@ import { SessionType } from "../../TypeDefs/Session";
 import fetch from "cross-fetch";
 import {
   fetchToken,
+  getUserDiscordData,
   getUserDiscordServers,
   initiateSession,
 } from "./functions";
 import { MessageType } from "../../TypeDefs/Messages";
 import isAuthorized, { getSession, ROLES } from "../../Authentication";
-import { DiscordServer } from "../../TypeDefs/Discord";
+import { DiscordServer, DiscordUser } from "../../TypeDefs/Discord";
 
 export enum DISCORD_ERROR {
   INVALID_REQUEST = "invalid_request",
@@ -71,5 +72,18 @@ export const GET_USER_OWNER_SERVERS = {
     return data.filter((server: any) => {
       if (server.owner) return server;
     });
+  },
+};
+
+export const GET_USER_DISCORD_DATA = {
+  type: DiscordUser,
+  args: {},
+  async resolve(parent: any, args: any, context: any) {
+    const session = await getSession(context.authorization);
+    if (!session) return new Error("invalid_session");
+
+    const data = await getUserDiscordData(session);
+
+    return data;
   },
 };

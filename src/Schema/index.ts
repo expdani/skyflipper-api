@@ -1,6 +1,10 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import { ADD_CURRENCY, DEPOSIT, GET_CURRENCY, WITHDRAW } from "./Currency";
-import { DISCORD_API_LOGIN, GET_USER_OWNER_SERVERS } from "./Discord";
+import {
+  DISCORD_API_LOGIN,
+  GET_USER_DISCORD_DATA,
+  GET_USER_OWNER_SERVERS,
+} from "./Discord";
 import { ADD_ITEM_TO_INVENTORY, GET_INVENTORY } from "./Inventory";
 import { BUY_ITEM, GET_ITEMS, GET_ITEM_SHOP, SELL_ITEM } from "./Item";
 import { CREATE_KARMA_POST, DELETE_KARMA_POST } from "./KarmaPost";
@@ -29,6 +33,7 @@ const Query = new GraphQLObjectType({
     getItems: GET_ITEMS,
     getRandomMessageEvent: GET_RANDOM_MESSAGE_EVENT,
     getBotSettings: GET_BOT_SETTINGS,
+    getUserDiscordData: GET_USER_DISCORD_DATA,
   },
 });
 

@@ -1,8 +1,8 @@
 {
-  "url": "http://atdani.nl:3001/",
+  "url": "http://localhost:8080/",
   "oauth": {
     "clientId": "752269862235144265",
-    "callbackURL": "http://atdani.nl:3001/discord/callback",
+    "callbackURL": "http://localhost:8080/discord/callback",
     "scopes": ["identify", "guilds"]
   }
 }
