@@ -6,6 +6,7 @@ import { env } from "../../../environment";
 import fetch from "cross-fetch";
 import { DISCORD_ERROR } from ".";
 import delay from "../../Utils/delay";
+import { TypeSession } from "../../Discord";
 
 export async function initiateSession(
   user_id: string,
@@ -28,6 +29,15 @@ export async function initiateSession(
   return await Sessions.findOne({
     access_token,
   });
+}
+
+export async function userLogout(session: TypeSession) {
+  await Sessions.delete({
+    access_token: session.access_token,
+    user_id: session.user_id,
+  });
+
+  return true;
 }
 
 export async function fetchToken(code: string) {
@@ -87,7 +97,6 @@ export async function getUserDiscordData(
   if (data.message === DISCORD_ERROR.RATE_LIMIT) {
     return await getUserDiscordData(session, data.retry_after);
   } else {
-    console.log(data);
     return data;
   }
 }

@@ -11,6 +11,7 @@ import {
   getUserDiscordData,
   getUserDiscordServers,
   initiateSession,
+  userLogout,
 } from "./functions";
 import { MessageType } from "../../TypeDefs/Messages";
 import isAuthorized, { getSession, ROLES } from "../../Authentication";
@@ -57,6 +58,20 @@ export const DISCORD_API_LOGIN = {
       console.error(err);
       throw new GraphQLError("An unknown error occured, please try again.");
     }
+  },
+};
+
+export const USER_LOGOUT = {
+  type: MessageType,
+  args: {},
+  async resolve(parent: any, args: any, context: any) {
+    const session = await getSession(context.authorization);
+    if (!session) return new Error("invalid_session");
+
+    const logout = await userLogout(session);
+
+    if (logout) return { error: false, message: "logout_success" };
+    else return new Error("logout_error");
   },
 };
 

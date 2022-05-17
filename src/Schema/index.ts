@@ -4,6 +4,7 @@ import {
   DISCORD_API_LOGIN,
   GET_USER_DISCORD_DATA,
   GET_USER_OWNER_SERVERS,
+  USER_LOGOUT,
 } from "./Discord";
 import { ADD_ITEM_TO_INVENTORY, GET_INVENTORY } from "./Inventory";
 import { BUY_ITEM, GET_ITEMS, GET_ITEM_SHOP, SELL_ITEM } from "./Item";
@@ -51,6 +52,7 @@ const Mutation = new GraphQLObjectType({
     addItemToInventory: ADD_ITEM_TO_INVENTORY,
     buyItem: BUY_ITEM,
     sellItem: SELL_ITEM,
+    userLogout: USER_LOGOUT,
   },
 });
 
