@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLString } from "graphql";
 import isAuthorized, { ROLES } from "../../Authentication";
 import { BotSettingsType } from "../../TypeDefs/GlobalSettings";
-import { SettingsType } from "../../TypeDefs/Settings";
+import { SettingsInputType, SettingsType } from "../../TypeDefs/Settings";
 import {
   getBotSettings,
   getServerSettings,
@@ -26,13 +26,14 @@ export const UPDATE_SERVER_SETTINGS = {
   type: SettingsType,
   args: {
     server_id: { type: GraphQLNonNull(GraphQLString) },
+    form: { type: GraphQLNonNull(SettingsInputType) },
   },
   async resolve(parent: any, args: any, context: any) {
-    const { server_id } = args;
+    const { server_id, form } = args;
     if (!(await isAuthorized(ROLES.USER, context.authorization, { server_id })))
       return new Error("unauthorized");
 
-    return updateServerSettings(server_id);
+    return updateServerSettings(server_id, form);
   },
 };
 
