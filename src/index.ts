@@ -3,7 +3,6 @@ import { graphqlHTTP } from "express-graphql";
 import { schema } from "./Schema";
 import cors from "cors";
 import { createConnection } from "typeorm";
-import { Users } from "./Entities/Users";
 import { Currency } from "./Entities/Currency";
 import { Inventory } from "./Entities/Inventory";
 import { KarmaTotal } from "./Entities/KarmaTotal";

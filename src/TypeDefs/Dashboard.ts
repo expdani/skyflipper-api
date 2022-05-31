@@ -1,11 +1,4 @@
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLFloat,
-  GraphQLID,
-  GraphQLInt,
-} from "graphql";
-import GraphQLJSON from "graphql-type-json";
+import { GraphQLObjectType, GraphQLInt } from "graphql";
 
 export const DashboardType = new GraphQLObjectType({
   name: "Dashboard",
@@ -22,17 +15,8 @@ export const HighlightsType = new GraphQLObjectType({
       type: new GraphQLObjectType({
         name: "HighlightSessions",
         fields: () => ({
+          total: { type: GraphQLInt },
           week: { type: GraphQLInt },
-          last_week: { type: GraphQLInt },
-        }),
-      }),
-    },
-    total_votes_weekly: {
-      type: new GraphQLObjectType({
-        name: "HighlightTotalVotesWeekly",
-        fields: () => ({
-          week: { type: GraphQLInt },
-          last_week: { type: GraphQLInt },
         }),
       }),
     },
@@ -41,6 +25,16 @@ export const HighlightsType = new GraphQLObjectType({
         name: "HighlightTotalVotes",
         fields: () => ({
           total: { type: GraphQLInt },
+          week: { type: GraphQLInt },
+        }),
+      }),
+    },
+    total_messages: {
+      type: new GraphQLObjectType({
+        name: "HighlightTotalMessages",
+        fields: () => ({
+          total: { type: GraphQLInt },
+          week: { type: GraphQLInt },
         }),
       }),
     },

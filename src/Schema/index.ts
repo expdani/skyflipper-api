@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import { ADD_CURRENCY, DEPOSIT, GET_CURRENCY, WITHDRAW } from "./Currency";
+import { GET_DASHBOARD } from "./Dashboard";
 import {
   DISCORD_API_LOGIN,
   GET_USER_DISCORD_DATA,
@@ -35,6 +36,7 @@ const Query = new GraphQLObjectType({
     getRandomMessageEvent: GET_RANDOM_MESSAGE_EVENT,
     getBotSettings: GET_BOT_SETTINGS,
     getUserDiscordData: GET_USER_DISCORD_DATA,
+    getDashboard: GET_DASHBOARD,
   },
 });
 
