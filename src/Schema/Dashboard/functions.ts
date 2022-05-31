@@ -76,12 +76,6 @@ export async function getMessagesHighlight() {
     .where("created_at > :lastWeek", { lastWeek })
     .getRawOne();
 
-  const asasdas = await KarmaPosts.count({
-    where: {
-      created_at: MoreThan(lastWeek),
-    },
-  });
-
   return {
     total: parseInt(totalCount.count),
     week: parseInt(weekCount.count),
