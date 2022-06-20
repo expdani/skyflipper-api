@@ -49,6 +49,7 @@ const main = async () => {
       schema,
       graphiql: env.NODE_ENV === "development",
       context: { authorization: req.headers.authorization },
+      csrfPrevention: true,
       cors: {
         origin: ["https://www.atdani.nl", "http://www.atdani.nl"],
       },
