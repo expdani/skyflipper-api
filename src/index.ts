@@ -15,6 +15,7 @@ import { Settings } from "./Entities/Settings";
 import { Items } from "./Entities/Items";
 import { RandomEvents } from "./Entities/RandomEvents";
 import { GlobalSettings } from "./Entities/GlobalSettings";
+const enforce = require("express-sslify");
 
 const main = async () => {
   await createConnection({
@@ -42,6 +43,7 @@ const main = async () => {
   const app = express();
   app.use(cors());
   app.use(express.json());
+  app.use(enforce.HTTPS());
 
   app.use(
     "/graphql",
@@ -49,10 +51,6 @@ const main = async () => {
       schema,
       graphiql: env.NODE_ENV === "development",
       context: { authorization: req.headers.authorization },
-      csrfPrevention: true,
-      cors: {
-        origin: ["https://www.atdani.nl", "http://www.atdani.nl"],
-      },
     }))
   );
 
