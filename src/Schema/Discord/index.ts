@@ -14,7 +14,7 @@ import {
   userLogout,
 } from "./functions";
 import { MessageType } from "../../TypeDefs/Messages";
-import isAuthorized, { getSession, ROLES } from "../../Authentication";
+import { getSession } from "../../Authentication";
 import { DiscordServer, DiscordUser } from "../../TypeDefs/Discord";
 
 export enum DISCORD_ERROR {
@@ -35,6 +35,7 @@ export const DISCORD_API_LOGIN = {
 
       const oauthData = await oauth.json();
 
+      console.log(oauthData);
       if (oauthData.error) return new GraphQLError(oauthData.error);
       else {
         const result = await fetch("https://discord.com/api/users/@me", {
