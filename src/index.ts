@@ -41,9 +41,9 @@ const main = async () => {
   });
 
   const app = express();
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
   app.use(cors());
   app.use(express.json());
-  app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
   app.use(
     "/graphql",
