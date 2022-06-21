@@ -32,10 +32,8 @@ export const DISCORD_API_LOGIN = {
 
     try {
       const oauth = await fetchToken(code);
-      console.log(oauth);
 
       const oauthData = await oauth.json();
-      console.log(oauthData);
 
       if (oauthData.error) return new GraphQLError(oauthData.error);
       else {
