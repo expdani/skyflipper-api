@@ -69,9 +69,10 @@ const main = async () => {
       "/etc/letsencrypt/live/atdani.nl/privkey.pem"
     );
     const certificate = fs.readFileSync(
-      "/etc/letsencrypt/live/atdani.nl/cert.pem"
+      "/etc/letsencrypt/live/atdani.nl/fullchain.pem"
     );
 
+    // log to check if it exists
     console.log(certificate);
 
     const options = {
