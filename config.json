@@ -1,7 +1,7 @@
 {
   "url": "http://localhost:8080/",
   "oauth": {
-    "clientId": "752269862235144265",
+    "clientId": "884089962683842580",
     "callbackURL": "http://localhost:8080/discord/callback",
     "scopes": ["identify", "guilds"]
   }

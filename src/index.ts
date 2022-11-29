@@ -3,18 +3,13 @@ import { graphqlHTTP } from "express-graphql";
 import { schema } from "./Schema";
 import cors from "cors";
 import { createConnection } from "typeorm";
-import { Currency } from "./Entities/Currency";
-import { Inventory } from "./Entities/Inventory";
-import { KarmaTotal } from "./Entities/KarmaTotal";
-import { KarmaPosts } from "./Entities/KarmaPosts";
 require("dotenv").config();
 import * as discord from "./Discord";
-import { Sessions } from "./Entities/Sessions";
 import { env } from "../environment";
-import { Settings } from "./Entities/Settings";
-import { Items } from "./Entities/Items";
-import { RandomEvents } from "./Entities/RandomEvents";
-import { GlobalSettings } from "./Entities/GlobalSettings";
+import { Currency } from "./Entities/Currency";
+import { Bins } from "./Entities/Bins";
+import { Sessions } from "./Entities/Sessions";
+import { Auctions } from "./Entities/Auctions";
 
 const enforce = require("express-sslify");
 const https = require("node:https");
@@ -30,25 +25,15 @@ const main = async () => {
     password: env.DATABASE_PASSWORD,
     logging: false,
     synchronize: true,
-    entities: [
-      Currency,
-      Inventory,
-      KarmaTotal,
-      KarmaPosts,
-      Sessions,
-      Settings,
-      RandomEvents,
-      GlobalSettings,
-      Items,
-    ],
+    entities: [Currency, Bins, Sessions, Auctions],
   });
 
   const app = express();
   if (env.NODE_ENV === "production")
     app.use(enforce.HTTPS({ trustProtoHeader: true }));
   app.use(cors());
-  app.use(express.json());
-
+  app.use(express.json({ limit: "50mb" }));
+  app.use(express.urlencoded({ limit: "50mb" }));
   app.use(
     "/graphql",
     graphqlHTTP((req) => ({
